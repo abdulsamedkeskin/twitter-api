@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const authController = require('../controller/auth.controller')
-const { verifyToken } = require('../middleware/auth.middleware')
+const authController = require('../controllers/auth.controller')
+const { verifyToken } = require('../middlewares/auth.middleware')
 
 router.use("/delete",verifyToken)
 

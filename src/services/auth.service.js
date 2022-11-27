@@ -1,4 +1,4 @@
-const {User} = require('../models/auth.model')
+const {User} = require('../models/models')
 const {encode} = require('../utils/auth.util')
 
 
@@ -15,7 +15,7 @@ async function register(username, password) {
 async function login(username, password) {
     const user = await User.findOne({where: {username: username}})
     if (!user) {
-        return {"status": 400, "message":"user not found"}
+        return {"status": 404, "message":"user not found"}
     }
     if (!await user.validatePassword(password)) {
         return {"status": 400, "message": "wrong username or password"}
@@ -27,7 +27,7 @@ async function login(username, password) {
 async function delete_account(identity) {
     const user = await User.findOne({where: {username: identity}})
     if (!user) {
-        return {"status": 400, "message": "user not found"}
+        return {"status": 404, "message": "user not found"}
     }
     await User.destroy({where: {username: identity}})
     return {"status": 200, "message": "user deleted"}

@@ -24,14 +24,21 @@ User.prototype.validatePassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 }
 
+const Tweet = sequelize.define('Tweet', {
+  text: DataTypes.STRING,
+  created_by: DataTypes.STRING
+})
+
 
 sequelize.authenticate().then(err => {
     console.log("Connected to db")
     User.sync()
+    Tweet.sync()
 }).catch(err => {
     console.log(err)
 })
 
 module.exports = {
-    User
+    User,
+    Tweet
 }
