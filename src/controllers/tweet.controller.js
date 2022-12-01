@@ -2,8 +2,8 @@ const tweetService = require('../services/tweet.service')
 
 async function create(req, res, next) {
     try {
-        const text = req.body?.text
-        const response = await tweetService.create(req.identity, text)
+        const { content } = req.body
+        const response = await tweetService.create(req.identity, content)
         res.status(response.status).json(response)
     }
     catch(err) {
@@ -14,9 +14,8 @@ async function create(req, res, next) {
 
 async function update(req, res, next) {
     try {
-        const id = req.body?.id
-        const text = req.body?.text
-        const response = await tweetService.update(req.identity, id, text)
+        const { id, content } = req.body
+        const response = await tweetService.update(req.identity, id, content)
         res.status(response.status).json(response)
     }
     catch(err) {
@@ -38,7 +37,7 @@ async function get(req, res, next) {
 
 async function delete_tweet(req, res, next) {
     try {
-        const id = req.body?.id
+        const { id } = req.body
         const response = await tweetService.delete_tweet(req.identity, id)
         res.status(response.status).json(response)
     }

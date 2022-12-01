@@ -2,9 +2,8 @@ const authService = require('../services/auth.service')
 
 async function register(req, res, next) {
     try {
-        const username = req.body?.username
-        const password = req.body?.password
-        const response = await authService.register(username, password)
+        const { name, password, email, username } = req.body
+        const response = await authService.register(name, password, email, username)
         res.status(response.status).json(response)
     }
     catch(err) {
@@ -15,9 +14,19 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
     try {
-        const username = req.body?.username
-        const password = req.body?.password
+        const { username, password } = req.body
         const response = await authService.login(username, password)
+        res.status(response.status).json(response)
+    }
+    catch(err) {
+        console.error(err.message);
+        next(err);
+    }
+}
+
+async function refreshToken(req, res, next) {
+    try {
+        const response = await authService.refreshToken(req.identity, req.id)
         res.status(response.status).json(response)
     }
     catch(err) {
@@ -40,5 +49,6 @@ async function delete_account(req, res, next) {
 module.exports = {
     register,
     login,
+    refreshToken,
     delete_account
 }
