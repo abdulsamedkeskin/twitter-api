@@ -12,6 +12,7 @@ const verifyToken = (req, res, next) => {
   try {
     const decoded = decode(token)
     req.identity = decoded.data.identity
+    req.id = decoded.data.id
     next()
   }
   catch(err) {
