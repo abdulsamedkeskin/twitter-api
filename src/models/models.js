@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -7,8 +8,16 @@ const sequelize = new Sequelize({
 });
 
 const User = sequelize.define('User', {
-  username: DataTypes.STRING,
+  id: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+    unique: true,
+    defaultValue: uuidv4()
+  },
+  name: DataTypes.STRING,
   password: DataTypes.STRING,
+  email: DataTypes.STRING,
+  username: DataTypes.STRING
   },
   {
     hooks: {
@@ -25,12 +34,18 @@ User.prototype.validatePassword = function(password) {
 }
 
 const Tweet = sequelize.define('Tweet', {
-  text: DataTypes.STRING,
-  created_by: DataTypes.STRING
+  id: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+    unique: true,
+    defaultValue: uuidv4()
+  },
+  user_id: DataTypes.STRING,
+  content: DataTypes.STRING
 })
 
 
-sequelize.authenticate().then(err => {
+sequelize.authenticate().then(e => {
     console.log("Connected to db")
     User.sync()
     Tweet.sync()
