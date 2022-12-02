@@ -41,7 +41,15 @@ const Tweet = sequelize.define('Tweet', {
     unique: true
   },
   user_id: DataTypes.UUID,
-  content: DataTypes.STRING
+  content: DataTypes.STRING,
+  retweet_count: {
+    type: DataTypes.NUMBER,
+    defaultValue: 0
+  },
+  like_count: {
+    type: DataTypes.NUMBER,
+    defaultValue: 0
+  }
 })
 
 const Follow = sequelize.define('Follow', {
@@ -66,9 +74,20 @@ const Retweet = sequelize.define('Retweet', {
   user_id: DataTypes.UUID
 })
 
+
+const Like = sequelize.define('Like', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+    unique: true
+  },
+  tweet_id: DataTypes.UUID,
+  user_id: DataTypes.UUID
+})
+
 sequelize.authenticate().then(e => {
     console.log("Connected to db")
-    Retweet.sync()
   }).catch(err => {
     console.log(err)
 })
@@ -77,5 +96,6 @@ module.exports = {
     User,
     Tweet,
     Follow,
-    Retweet
+    Retweet,
+    Like
 }

@@ -56,6 +56,22 @@ async function retweet(req, res, next) {
     }
 }
 
+async function like(req, res, next) {
+    try {
+        const { tweet_id } = req.body
+        if (!tweet_id) {
+            return res.status(400).json({"status": 400, "message": "bad request"})
+        }
+        const response = await tweetService.like(req.id, tweet_id)
+        res.status(response.status).json(response)
+    }
+    catch(err) {
+        console.error(err)
+        next(err)
+    }
+}
+
+
 async function delete_tweet(req, res, next) {
     try {
         const { id } = req.body
@@ -76,5 +92,6 @@ module.exports = {
     update,
     get,
     retweet,
+    like,
     delete_tweet
 }
