@@ -1,4 +1,4 @@
-const {Follow} = require('../models/models')
+const {Follow} = require('../models')
 
 
 async function follow(id, follower_id) {

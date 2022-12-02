@@ -1,4 +1,4 @@
-const {Tweet} = require('../models/models')
+const {Tweet} = require('../models')
 const {encode} = require('../utils/auth.util')
 
 
