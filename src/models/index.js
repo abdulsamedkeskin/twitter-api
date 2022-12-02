@@ -55,8 +55,20 @@ const Follow = sequelize.define('Follow', {
   follower_id: DataTypes.UUID
 })
 
+const Retweet = sequelize.define('Retweet', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+    unique: true
+  },
+  tweet_id: DataTypes.UUID,
+  user_id: DataTypes.UUID
+})
+
 sequelize.authenticate().then(e => {
     console.log("Connected to db")
+    Retweet.sync()
   }).catch(err => {
     console.log(err)
 })
@@ -64,5 +76,6 @@ sequelize.authenticate().then(e => {
 module.exports = {
     User,
     Tweet,
-    Follow
+    Follow,
+    Retweet
 }

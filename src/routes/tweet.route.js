@@ -11,6 +11,8 @@ router.patch("/update", tweetController.update)
 
 router.get("/get", tweetController.get)
 
+router.post("/retweet", tweetController.retweet)
+
 router.delete("/delete", tweetController.delete_tweet)
 
 module.exports = router
