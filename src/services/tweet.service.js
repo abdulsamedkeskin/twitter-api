@@ -29,7 +29,7 @@ async function delete_tweet(user_id, id) {
     if (!tweet) {
         return {"status": 404, "message": "tweet not found"}
     }
-    await Tweet.destroy({where: {id: id}})
+    await tweet.destroy()
     return {"status": 200, "message": "tweet deleted"}
 }
 

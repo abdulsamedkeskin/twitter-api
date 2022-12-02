@@ -7,7 +7,7 @@ router.use(verifyToken)
 
 router.post("/create", tweetController.create)
 
-router.put("/update", tweetController.update)
+router.patch("/update", tweetController.update)
 
 router.get("/get", tweetController.get)
 

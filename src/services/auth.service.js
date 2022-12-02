@@ -36,7 +36,7 @@ async function delete_account(identity) {
     if (!user) {
         return {"status": 404, "message": "user not found"}
     }
-    await User.destroy({where: {username: identity}})
+    await user.destroy()
     return {"status": 200, "message": "user deleted"}
 }
 
