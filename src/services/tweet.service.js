@@ -24,6 +24,14 @@ async function get(id) {
     return {"status": 200, "data": tweets}
 }
 
+async function getById(id) {
+    const tweet = await Tweet.findOne({where: {id: id}})
+    if (!tweet) {
+        return {"status": 404, "message": "tweet not found"}
+    }
+    return {status: 200, data: tweet}
+}
+
 async function retweet(id, tweet_id) {
     const tweet = await Tweet.findOne({where: {id: tweet_id}})
     if (!tweet) {
@@ -61,6 +69,7 @@ module.exports = {
     create, 
     update,
     get,
+    getById,
     retweet,
     like,
     delete_tweet

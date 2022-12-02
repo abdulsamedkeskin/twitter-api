@@ -11,6 +11,8 @@ router.patch("/update", tweetController.update)
 
 router.get("/get", tweetController.get)
 
+router.get("/get/:id", tweetController.getById)
+
 router.post("/retweet", tweetController.retweet)
 
 router.post("/like", tweetController.like)

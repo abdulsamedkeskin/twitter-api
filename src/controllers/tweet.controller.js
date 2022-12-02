@@ -41,6 +41,18 @@ async function get(req, res, next) {
     }
 }
 
+async function getById(req, res, next) {
+    try {
+        const { id } = req.params
+        const response = await tweetService.getById(id)
+        res.status(response.status).json(response)
+    }
+    catch(err) {
+        console.error(err.message);
+        next(err);
+    }
+}
+
 async function retweet(req, res, next) {
     try {
         const { tweet_id } = req.body
@@ -91,6 +103,7 @@ module.exports = {
     create,
     update,
     get,
+    getById,
     retweet,
     like,
     delete_tweet
