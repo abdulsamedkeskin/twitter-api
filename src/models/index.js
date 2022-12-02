@@ -14,10 +14,22 @@ const User = sequelize.define('User', {
     primaryKey: true,
     unique: true
   },
-  name: DataTypes.STRING,
-  password: DataTypes.STRING,
-  email: DataTypes.STRING,
-  username: DataTypes.STRING
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
   },
   {
     hooks: {
@@ -40,8 +52,10 @@ const Tweet = sequelize.define('Tweet', {
     primaryKey: true,
     unique: true
   },
-  user_id: DataTypes.UUID,
-  content: DataTypes.STRING,
+  content: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   retweet_count: {
     type: DataTypes.NUMBER,
     defaultValue: 0
@@ -49,9 +63,16 @@ const Tweet = sequelize.define('Tweet', {
   like_count: {
     type: DataTypes.NUMBER,
     defaultValue: 0
+  },
+  reply_count: {
+    type: DataTypes.NUMBER,
+    defaultValue: 0
   }
 })
 
+User.hasMany(Tweet, {
+  foreignKey: "user_id",
+});
 const Follow = sequelize.define('Follow', {
   id: {
     type: DataTypes.UUID,
@@ -59,8 +80,14 @@ const Follow = sequelize.define('Follow', {
     primaryKey: true,
     unique: true
   },
-  user_id: DataTypes.UUID,
-  follower_id: DataTypes.UUID
+  follower_id: {
+    type: DataTypes.UUID,
+    allowNull: false
+  }
+})
+
+User.hasMany(Follow, {
+  foreignKey: 'user_id'
 })
 
 const Retweet = sequelize.define('Retweet', {
@@ -70,8 +97,13 @@ const Retweet = sequelize.define('Retweet', {
     primaryKey: true,
     unique: true
   },
-  tweet_id: DataTypes.UUID,
-  user_id: DataTypes.UUID
+})
+
+User.hasMany(Retweet, {
+  foreignKey: 'user_id'
+})
+Tweet.hasMany(Retweet, {
+  foreignKey: 'tweet_id'
 })
 
 
@@ -81,15 +113,47 @@ const Like = sequelize.define('Like', {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
     unique: true
-  },
-  tweet_id: DataTypes.UUID,
-  user_id: DataTypes.UUID
+  }
 })
 
-sequelize.authenticate().then(e => {
-    console.log("Connected to db")
-  }).catch(err => {
-    console.log(err)
+User.hasMany(Like, {
+  foreignKey: 'user_id'
+})
+Tweet.hasMany(Like, {
+  foreignKey: 'tweet_id'
+})
+
+const Reply = sequelize.define('Reply', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+    unique: true
+  },
+  content: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  reply_id: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  retweet_count: {
+    type: DataTypes.NUMBER,
+    defaultValue: 0
+  },
+  like_count: {
+    type: DataTypes.NUMBER,
+    defaultValue: 0
+  },
+  reply_count: {
+    type: DataTypes.NUMBER,
+    defaultValue: 0
+  }
+})
+
+User.hasMany(Reply, {
+  foreignKey: 'user_id'
 })
 
 module.exports = {
@@ -97,5 +161,6 @@ module.exports = {
     Tweet,
     Follow,
     Retweet,
-    Like
+    Like,
+    Reply
 }

@@ -6,6 +6,9 @@ async function follow(req, res, next) {
         if (!id) {
             return res.status(400).json({"status": 400, "message": "bad request"})
         }
+        if (id == req.id) {
+            return res.status(400).json({"status": 400, "message": "you can't follow yourself"})
+        }
         const response = await userService.follow(id, req.id)
         res.status(response.status).json(response)
     }
