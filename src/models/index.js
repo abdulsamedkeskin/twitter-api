@@ -69,10 +69,6 @@ const Tweet = sequelize.define('Tweet', {
     defaultValue: 0
   }
 })
-
-User.hasMany(Tweet, {
-  foreignKey: "user_id",
-});
 const Follow = sequelize.define('Follow', {
   id: {
     type: DataTypes.UUID,
@@ -86,9 +82,6 @@ const Follow = sequelize.define('Follow', {
   }
 })
 
-User.hasMany(Follow, {
-  foreignKey: 'user_id'
-})
 
 const Retweet = sequelize.define('Retweet', {
   id: {
@@ -99,12 +92,6 @@ const Retweet = sequelize.define('Retweet', {
   },
 })
 
-User.hasMany(Retweet, {
-  foreignKey: 'user_id'
-})
-Tweet.hasMany(Retweet, {
-  foreignKey: 'tweet_id'
-})
 
 
 const Like = sequelize.define('Like', {
@@ -116,12 +103,6 @@ const Like = sequelize.define('Like', {
   }
 })
 
-User.hasMany(Like, {
-  foreignKey: 'user_id'
-})
-Tweet.hasMany(Like, {
-  foreignKey: 'tweet_id'
-})
 
 const Reply = sequelize.define('Reply', {
   id: {
@@ -152,14 +133,41 @@ const Reply = sequelize.define('Reply', {
   }
 })
 
+User.hasMany(Tweet, {
+  foreignKey: "user_id",
+  onDelete: 'cascade'
+});
+User.hasMany(Follow, {
+  foreignKey: 'user_id',
+  onDelete: 'cascade'
+})
+User.hasMany(Retweet, {
+  foreignKey: 'user_id',
+  onDelete: 'cascade'
+})
+Tweet.hasMany(Retweet, {
+  foreignKey: 'tweet_id',
+  onDelete: 'cascade'
+})
+User.hasMany(Like, {
+  foreignKey: 'user_id',
+  onDelete: 'cascade'
+})
+Tweet.hasMany(Like, {
+  foreignKey: 'tweet_id',
+  onDelete: 'cascade'
+})
 User.hasMany(Reply, {
-  foreignKey: 'user_id'
+  foreignKey: 'user_id',
+  onDelete: 'cascade'
 })
 Reply.hasMany(Like, {
-  foreignKey: 'reply_id'
+  foreignKey: 'reply_id',
+  onDelete: 'cascade'
 })
 Reply.hasMany(Retweet, {
-  foreignKey: 'reply_id'
+  foreignKey: 'reply_id',
+  onDelete: 'cascade'
 })
 
 module.exports = {
