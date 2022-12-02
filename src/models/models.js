@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'app.db'
+    storage: 'app.db',
+    logging: false
 });
 
 const User = sequelize.define('User', {
@@ -39,8 +40,19 @@ const Tweet = sequelize.define('Tweet', {
     primaryKey: true,
     unique: true
   },
-  user_id: DataTypes.STRING,
+  user_id: DataTypes.UUID,
   content: DataTypes.STRING
+})
+
+const Follow = sequelize.define('Follow', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+    unique: true
+  },
+  user_id: DataTypes.UUID,
+  follower_id: DataTypes.UUID
 })
 
 sequelize.authenticate().then(e => {
@@ -51,5 +63,6 @@ sequelize.authenticate().then(e => {
 
 module.exports = {
     User,
-    Tweet
+    Tweet,
+    Follow
 }
