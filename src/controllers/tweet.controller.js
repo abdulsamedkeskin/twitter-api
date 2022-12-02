@@ -83,7 +83,6 @@ async function like(req, res, next) {
     }
 }
 
-
 async function delete_tweet(req, res, next) {
     try {
         const { id } = req.body
@@ -99,6 +98,47 @@ async function delete_tweet(req, res, next) {
     }
 }
 
+async function reply(req, res, next) {
+    try {
+        const { reply_id, content } = req.body
+        if (!reply_id) {
+            return res.status(400).json({"status": 400, "message": "bad request"})
+        }
+        const response = await tweetService.reply(req.id,reply_id, content)
+        res.status(response.status).json(response)
+    }
+    catch(err) {
+        console.error(err)
+        next(err)
+    }
+}
+
+async function getReplies(req, res, next) {
+    try {
+        const response = await tweetService.getReplies(req.id)
+        res.status(response.status).json(response)
+    }
+    catch(err) {
+        console.error(err)
+        next(err)
+    }
+}
+
+async function getReplyById(req, res, next) {
+    try {
+        const { id } = req.params
+        if (!id) {
+            return res.status(400).json({"status": 400, "message": "bad request"})
+        }
+        const response = await tweetService.getReplyById(id)
+        res.status(response.status).json(response)
+    }
+    catch(err) {
+        console.error(err)
+        next(err)
+    }
+}
+
 module.exports = {
     create,
     update,
@@ -106,5 +146,8 @@ module.exports = {
     getById,
     retweet,
     like,
+    reply,
+    getReplies,
+    getReplyById,
     delete_tweet
 }

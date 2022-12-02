@@ -17,6 +17,12 @@ router.post("/retweet", tweetController.retweet)
 
 router.post("/like", tweetController.like)
 
+router.post("/reply", tweetController.reply)
+
+router.get("/reply/:id", tweetController.getReplyById)
+
+router.get("/replies", tweetController.getReplies)
+
 router.delete("/delete", tweetController.delete_tweet)
 
 module.exports = router
