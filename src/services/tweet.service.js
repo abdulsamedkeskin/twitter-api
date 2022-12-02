@@ -32,27 +32,57 @@ async function getById(id) {
     return {status: 200, data: tweet}
 }
 
-async function retweet(id, tweet_id) {
-    const tweet = await Tweet.findOne({where: {id: tweet_id}})
-    if (!tweet) {
-        return {status: 404, message: "tweet not found"}
+async function retweet(id, tweet_id, reply_id) {
+    if (tweet_id) {
+        const tweet = await Tweet.findOne({where: {id: tweet_id}})
+        if (!tweet) {
+            return {status: 404, message: "tweet not found"}
+        }
+        await Like.create({user_id: id, tweet_id: tweet_id})
+        await tweet.increment('retweet_count')
     }
-    await Retweet.create({user_id: id, tweet_id: tweet_id})
-    await tweet.increment('retweet_count')
+    else if (reply_id) {
+        const reply = await Reply.findOne({where: {id: reply_id}})
+        if (!reply) {
+            return {status: 404, message: "reply not found"}
+        }
+        await Like.create({user_id: id, reply_id: reply_id})
+        await reply.increment('retweet_count')
+    }
+    else {
+        return {status: 400, message: "bad request"}
+    }
     return {status: 200, message: "retweeted"}
 }
 
-async function like(id, tweet_id) {
-    const tweet = await Tweet.findOne({where: {id: tweet_id}})
-    if (!tweet) {
-        return {status: 404, message: "tweet not found"}
+async function like(id, tweet_id, reply_id) {
+    if (tweet_id) {
+        const tweet = await Tweet.findOne({where: {id: tweet_id}})
+        if (!tweet) {
+            return {status: 404, message: "tweet not found"}
+        }
+        const like = await Like.findOne({where: {user_id: id, tweet_id: tweet.id}})
+        if (like) {
+            return {status: 400, message: "already liked"}
+        }
+        await Like.create({user_id: id, tweet_id: tweet_id})
+        await tweet.increment('like_count')
     }
-    const like = await Like.findOne({where: {user_id: id, tweet_id: tweet.id}})
-    if (like) {
-        return {status: 400, message: "already liked"}
+    else if (reply_id) {
+        const reply = await Reply.findOne({where: {id: reply_id}})
+        if (!reply) {
+            return {status: 404, message: "reply not found"}
+        }
+        const like = await Like.findOne({where: {user_id: id, reply_id: reply.id}})
+        if (like) {
+            return {status: 400, message: "already liked"}
+        }
+        await Like.create({user_id: id, reply_id: reply_id})
+        await reply.increment('like_count')
     }
-    await Like.create({user_id: id, tweet_id: tweet_id})
-    await tweet.increment('like_count')
+    else {
+        return {status: 400, message: "bad request"}
+    }
     return {status: 200, message: "liked"}
 }
 

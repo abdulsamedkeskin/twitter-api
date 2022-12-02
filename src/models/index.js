@@ -155,6 +155,12 @@ const Reply = sequelize.define('Reply', {
 User.hasMany(Reply, {
   foreignKey: 'user_id'
 })
+Reply.hasMany(Like, {
+  foreignKey: 'reply_id'
+})
+Reply.hasMany(Retweet, {
+  foreignKey: 'reply_id'
+})
 
 module.exports = {
     User,
