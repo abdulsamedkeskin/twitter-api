@@ -18,7 +18,7 @@ async function create(req, res, next) {
 async function update(req, res, next) {
     try {
         const { id, content } = req.body
-        if (!id && !content) {
+        if (!id || !content) {
             return res.status(400).json({status: 400, message: "bad request"})
         }
         const response = await tweetService.update(req.id, id, content)
@@ -103,9 +103,6 @@ async function getRetweets(req, res, next) {
 async function getRetweetById(req, res, next) {
     try {
         const { id } = req.params
-        if (!id) {
-            return {status: 400, message: "bad request"}
-        }
         const response = await tweetService.getRetweetById(req.id, id)
         res.status(response.status).json(response)
     }
@@ -165,9 +162,6 @@ async function getLikes(req, res, next) {
 async function getLikeById(req, res, next) {
     try {
         const { id } = req.params
-        if (!id) {
-            return {status: 400, message: "bad request"}
-        }
         const response = await tweetService.getLikeById(req.id, id)
         res.status(response.status).json(response)
     }

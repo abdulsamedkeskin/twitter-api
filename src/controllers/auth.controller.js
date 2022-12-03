@@ -3,7 +3,7 @@ const authService = require('../services/auth.service')
 async function register(req, res, next) {
     try {
         const { name, password, email, username } = req.body
-        if (!name && !password && !email && !username) {
+        if (!name || !password || !email || !username) {
             return res.status(400).json({"status": 400, "message": "bad request"})
         }
         const response = await authService.register(name, password, email, username)
@@ -18,7 +18,7 @@ async function register(req, res, next) {
 async function login(req, res, next) {
     try {
         const { username, password } = req.body
-        if (!password && !username) {
+        if (!password || !username) {
             return res.status(400).json({"status": 400, "message": "bad request"})
         }
         const response = await authService.login(username, password)
