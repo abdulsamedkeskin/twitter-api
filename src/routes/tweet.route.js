@@ -35,6 +35,8 @@ router.post("/reply", tweetController.reply)
 
 router.get("/reply/:id", tweetController.getReplyById)
 
-router.get("/replies", tweetController.getReplies)
+router.get("/myReplies", tweetController.getReplies)
+
+router.get("/replies/:id", tweetController.tweetReplies)
 
 module.exports = router

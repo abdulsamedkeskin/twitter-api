@@ -193,6 +193,14 @@ async function getReplies(id) {
     return {status: 200, data: replies}
 }
 
+async function tweetReplies(tweet_id) {
+    const replies = await Reply.findAll({where: {reply_id: tweet_id}})
+    if (replies.length == 0) {
+        return {status: 404, message: "replies not found"}
+    }
+    return {status: 200, data: replies}
+}
+
 async function getReplyById(reply_id) {
     const reply = await Reply.findOne({where: {reply_id: reply_id}})
     if (!reply) {
@@ -217,5 +225,6 @@ module.exports = {
     undoRetweet,
     undoLike,
     getRetweetById,
-    getLikeById
+    getLikeById,
+    tweetReplies
 }

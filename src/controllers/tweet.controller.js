@@ -218,6 +218,18 @@ async function getReplies(req, res, next) {
     }
 }
 
+async function tweetReplies(req, res, next) {
+    try {
+        const { id } = req.params
+        const response = await tweetService.tweetReplies(id)
+        res.status(response.status).json(response)
+    }
+    catch(err) {
+        console.error(err)
+        next(err)
+    }
+}
+
 async function getReplyById(req, res, next) {
     try {
         const { id } = req.params
@@ -249,5 +261,6 @@ module.exports = {
     getRetweets,
     getLikes,
     getRetweetById,
-    getLikeById
+    getLikeById,
+    tweetReplies
 }
